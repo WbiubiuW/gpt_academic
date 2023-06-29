@@ -91,13 +91,13 @@ chat分析报告生成 | [函数插件] 运行后自动生成总结汇报
 
 1. 下载项目
 ```sh
-git clone https://github.com/binary-husky/.git
+git clone https://github.com/binary-husky/gpt_academic.git
 cd gpt_academic
 ```
 
 2. 配置API_KEY
 
-在`config.py`中，配置API KEY等设置，[特殊网络环境设置](https://github.com/binary-husky/gpt_academic/issues/1) 。
+在`config.py`中，配置API KEY等设置，[点击查看特殊网络环境设置方法](https://github.com/binary-husky/gpt_academic/issues/1) 。
 
 (P.S. 程序运行时会优先检查是否存在名为`config_private.py`的私密配置文件，并用其中的配置覆盖`config.py`的同名配置。因此，如果您能理解我们的配置读取逻辑，我们强烈建议您在`config.py`旁边创建一个名为`config_private.py`的新配置文件，并把`config.py`中的配置转移（复制）到`config_private.py`中。`config_private.py`不受git管控，可以让您的隐私信息更加安全。P.S.项目同样支持通过`环境变量`配置大多数选项，环境变量的书写格式参考`docker-compose`文件。读取优先级: `环境变量` > `config_private.py` > `config.py`)
 
@@ -140,15 +140,9 @@ AVAIL_LLM_MODELS = ["gpt-3.5-turbo", "api2d-gpt-3.5-turbo", "gpt-4", "api2d-gpt-
 python main.py
 ```
 
-5. 测试函数插件
-```
-- 测试函数插件模板函数（要求gpt回答历史上的今天发生了什么），您可以根据此函数为模板，实现更复杂的功能
-    点击 "[函数插件模板Demo] 历史上的今天"
-```
-
 ## 安装-方法2：使用Docker
 
-1. 仅ChatGPT（推荐大多数人选择）
+1. 仅ChatGPT（推荐大多数人选择，等价于docker-compose方案1）
 
 ``` sh
 git clone https://github.com/binary-husky/gpt_academic.git  # 下载项目
@@ -161,41 +155,43 @@ docker run --rm -it --net=host gpt-academic
 #（最后一步-选择2）在macOS/windows环境下，只能用-p选项将容器上的端口(例如50923)暴露给主机上的端口
 docker run --rm -it -e WEB_PORT=50923 -p 50923:50923 gpt-academic
 ```
-P.S. 如果需要依赖Latex的插件功能，请见Wiki
+P.S. 如果需要依赖Latex的插件功能，请见Wiki。另外，您也可以直接使用docker-compose获取Latex功能（修改docker-compose.yml，保留方案4并删除其他方案）。
 
 2. ChatGPT + ChatGLM + MOSS（需要熟悉Docker）
 
 ``` sh
-# 修改docker-compose.yml，删除方案1和方案3，保留方案2。修改docker-compose.yml中方案2的配置，参考其中注释即可
+# 修改docker-compose.yml，保留方案2并删除其他方案。修改docker-compose.yml中方案2的配置，参考其中注释即可
 docker-compose up
 ```
 
 3. ChatGPT + LLAMA + 盘古 + RWKV（需要熟悉Docker）
 ``` sh
-# 修改docker-compose.yml，删除方案1和方案2，保留方案3。修改docker-compose.yml中方案3的配置，参考其中注释即可
+# 修改docker-compose.yml，保留方案3并删除其他方案。修改docker-compose.yml中方案3的配置，参考其中注释即可
 docker-compose up
 ```
 
 
 ## 安装-方法3：其他部署姿势
 1. 一键运行脚本。
-完全不熟悉python环境的Windows用户可以下载[Release](https://github.com/binary-husky/gpt_academic/releases)中发布的一键运行脚本安装无本地模型的版本，
-不建议电脑上已有python的用户采用此方法（在此基础上安装插件的依赖很麻烦）。
+完全不熟悉python环境的Windows用户可以下载[Release](https://github.com/binary-husky/gpt_academic/releases)中发布的一键运行脚本安装无本地模型的版本。
 脚本的贡献来源是[oobabooga](https://github.com/oobabooga/one-click-installers)。
 
 2. 使用docker-compose运行。
 请阅读docker-compose.yml后，按照其中的提示操作即可
 
-3. 如何使用反代URL/微软云AzureAPI。
+3. 如何使用反代URL
 按照`config.py`中的说明配置API_URL_REDIRECT即可。
 
-4. 远程云服务器部署（需要云服务器知识与经验）。
+4. 微软云AzureAPI
+按照`config.py`中的说明配置即可（AZURE_ENDPOINT等四个配置）
+
+5. 远程云服务器部署（需要云服务器知识与经验）。
 请访问[部署wiki-1](https://github.com/binary-husky/gpt_academic/wiki/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%9C%E7%A8%8B%E9%83%A8%E7%BD%B2%E6%8C%87%E5%8D%97)
 
-5. 使用WSL2（Windows Subsystem for Linux 子系统）。
+6. 使用WSL2（Windows Subsystem for Linux 子系统）。
 请访问[部署wiki-2](https://github.com/binary-husky/gpt_academic/wiki/%E4%BD%BF%E7%94%A8WSL2%EF%BC%88Windows-Subsystem-for-Linux-%E5%AD%90%E7%B3%BB%E7%BB%9F%EF%BC%89%E9%83%A8%E7%BD%B2)
 
-6. 如何在二级网址（如`http://localhost/subpath`）下运行。
+7. 如何在二级网址（如`http://localhost/subpath`）下运行。
 请访问[FastAPI运行说明](docs/WithFastapi.md)
 
 ---
